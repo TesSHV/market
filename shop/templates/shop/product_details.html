@@ -1,0 +1,271 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{product.name}}
+{% endblock %}
+
+{% block content %}
+
+{% load crispy_forms_tags %}
+
+
+<style>
+
+        .text_block {
+        border-radius: 10px;
+
+        font-family: Arial, sans-serif;
+        font-size: 20px;
+        line-height: 1.5;
+    }
+
+
+        .detail {
+            width:100%;
+            height: 10rem;
+        }
+
+        .leftBlock {
+                height: 20rem;
+            }
+        .rightBlock {
+            height: 20rem;
+        }
+
+        .img_block{
+            padding:0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .page{
+            margin-top: 3%;
+        }
+
+        @media screen and (min-width: 768px) {
+            .img_block {
+                margin-right: 1%;
+                width:59%;
+            }
+            .properties_block {
+                margin-left: 1%;
+                width:39%;
+            }
+
+            .page{
+                width: 92%;
+                margin-right: 4%;
+                margin-left: 4%;
+            }
+
+
+        }
+
+        @media screen and (min-width: 992px) {
+            .page{
+                width: 94%;
+                margin-right: 3%;
+                margin-left: 3%;
+            }
+        }
+
+        .product_img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .properties_block{
+            word-wrap: break-word;
+        }
+
+        .comment{
+            width:30%;
+            min-width: 20%;
+        }
+
+        .fa {
+            font: normal normal normal 14px/1 FontAwesome;
+        }
+
+        @media screen and (min-width: 768px) {
+
+            button.btn.btn-success.topProductsBtn {
+                transition: .2s;
+            }
+
+            button.btn.btn-success.topProductsBtn:hover{
+                transform: scale(1.1);
+            }
+
+            button.btn.btn-success.topProductsBtn:active{
+                transform: scale(0.9);
+            }
+
+            button.btn.btn-success.topProductsBtn {
+                transition: .2s;
+            }
+
+            button.btn.btn-success.topProductsBtn:hover{
+                transform: scale(1.05);
+            }
+
+            button.btn.btn-success.topProductsBtn:active{
+                transform: scale(0.95);
+            }
+
+
+            button.btn.btn-danger.topProductsBtn {
+                transition: .2s;
+            }
+
+            button.btn.btn-danger.topProductsBtn:hover{
+                transform: scale(1.1);
+            }
+
+            button.btn.btn-danger.topProductsBtn:active{
+                transform: scale(0.9);
+            }
+
+            button.btn.btn-danger.topProductsBtn {
+                transition: .2s;
+            }
+
+            button.btn.btn-danger.topProductsBtn:hover{
+                transform: scale(1.05);
+            }
+
+            button.btn.btn-danger.topProductsBtn:active{
+                transform: scale(0.95);
+            }
+
+
+            button.btn.btn-primary.topProductsBtn {
+                transition: .2s;
+            }
+
+            button.btn.btn-primary.topProductsBtn:hover{
+                transform: scale(1.1);
+            }
+
+            button.btn.btn-primary.topProductsBtn:active{
+                transform: scale(0.9);
+            }
+
+            button.btn.btn-primary.topProductsBtn {
+                transition: .2s;
+            }
+
+            button.btn.btn-primary.topProductsBtn:hover{
+                transform: scale(1.05);
+            }
+
+            button.btn.btn-primary.topProductsBtn:active{
+                transform: scale(0.95);
+            }
+
+
+        }
+
+    </style>
+
+<div class="container-fluid page ">
+        <div class="row">
+
+            <div class='card col-md-6 col-sm-12 img_block '>
+                <div>
+                    <img src="{{product.image.url}}" class="rounded product_img" alt="">
+                </div>
+            </div>
+
+            <div class='card col-md-5 col-sm-12 properties_block  '>
+                <div class="card-body">
+                    <h3 style="text-align:center;" class="mb-4">{{product.name}}</h3>
+                    <p><b>Price: </b>{{product.price|floatformat}} $</p>
+                    <p><b>Producer: </b>{{product.producer}}</p>
+                    <p><b>Country: </b>{{product.producerCountry}}</p>
+<!--                    <p><b>Desctiption: </b>{{product.description}}</p>-->
+
+                    <div>
+                        <a href="{% url 'order_product_page' slug=product.slug %}"><button type="button" class="btn btn-success topProductsBtn">Buy</button></a>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class='card col-md-12 col-sm-12  mt-4 '>
+                <p style="word-wrap: break-word;"><b>Desctiption: </b>
+                    <p>
+                        <p>{{product.description}}</p>
+                    </p>
+                </p>
+            </div>
+
+        </div>
+</div>
+
+{% if request.user.is_authenticated %}
+<form method="post">
+    <div class="container" style="padding-top:5%;">
+        <div class="form-row">
+            <div class="form-group col-md-12">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <div class="text-center">
+                    <button class="btn btn-primary text-center" type="submit">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+{% else %}
+<p class="text-center" style="margin-top:3%;">You must <a href="{% url 'login_user_page' %}">login</a> to leave a feedback</p>
+{% endif %}
+
+
+<h5 class="text-center" style="padding-top:7%;">Feedbacks</h5>
+{% if feedbacks %}
+<div class="container" style="margin-top:3%;">
+    <div class="row">
+        {% for feedback in feedbacks %}
+            <div class="card col-md-12" style="margin-bottom: 2%;">
+                <ul class="list-inline" style="padding-top:1%;">
+                    {% if feedback.user %}
+                        <li class="d-inline"><b>{{feedback.user.username}}</b></li>
+                    {% else %}
+                        <li class="d-inline"><b>[DELETED USER]</b></li>
+                    {% endif %}
+                  <li class="d-inline text-right font-italic" style="padding-left:2%;">{{feedback.feedback_date}}</li>
+
+                </ul>
+                <p>{{feedback.feedback_text}}</p>
+                {% if request.user.is_staff or request.user.id == feedback.user.id%}
+                    <div class="col text-center mb-3">
+                        {% if feedback.user %}
+                            <a href="{% url 'delete_feedback' feedback_id=feedback.id product_slug=product.slug user_id=feedback.user.id %}">
+                        {% else %}
+                            <a href="{% url 'delete_feedback' feedback_id=feedback.id product_slug=product.slug user_id=0%}">
+                        {% endif %}
+                            <button type="button" class="btn btn-danger topProductsBtn">Delete</button>
+                        </a>
+                    </div>
+                {% endif %}
+
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% else %}
+<p class="text-center">There are no feedbacks yet. Be first!</p>
+{% endif %}
+
+<!--<h1>{{product.name}}</h1>-->
+<!--<p>{{product.price}}</p>-->
+<!--<p>{{product.producer}}</p>-->
+<!--<p>{{product.producerCountry}}</p>-->
+<!--<p>{{product.description}}</p>-->
+<!--<img src="{{product.image.url}}" />-->
+<!--{% if request.user.is_authenticated %}-->
+<!--    <p><a href="{% url 'order_product_page' slug=product.slug %}">Buy</a></p>-->
+<!--{% endif %}-->
+
+{% endblock %}

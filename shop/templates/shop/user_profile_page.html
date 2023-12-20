@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Profile
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="card card col-md-7 offset-md-2" style="padding: 5%;margin-top:10%;line-height: 2.5em">
+          <div class="card-body">
+            <h5 class="card-title text-center">User Profile</h5>
+        <!--    <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>-->
+            <p class="card-text"><b>Username:</b> {{user.username}}</p>
+            <p class="card-text"><b>Email address:</b> {{user.email}}</p>
+            <p class="card-text"><b>Firstname:</b> {{user.first_name}}</p>
+            <p class="card-text"><b>Lastname:</b> {{user.last_name}}</p>
+            <p class="card-text"><b>Is staff:</b> {{user.is_staff}}</p>
+            <p class="card-text"><b>Registration date:</b> {{user.date_joined}}</p>
+        <!--    <a href="#" class="card-link">Card link</a>-->
+        <!--    <a href="#" class="card-link">Another link</a>-->
+          </div>
+        </div>
+    </div>
+</div>
+
+<!--<p>Username: {{user.username}}</p>-->
+<!--<p>Email address: {{user.email}}</p>-->
+<!--<p>Firstname: {{user.first_name}}</p>-->
+<!--<p>Lastname: {{user.last_name}}</p>-->
+
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Order History
+{% endblock %}
+
+{% block content %}
+
+{% if products %}
+
+    <div class="container" style="margin-top:8%;">
+        <div class="row">
+            {% for product in products%}
+
+
+                    <div class="card col-md-6 offset-md-2" style="width: 18rem;margin-bottom: 1%;">
+                        {% if product.0 %}
+                            <a href="{% url 'product_details_page' slug=product.0.slug %}"><img class="card-img-top" src="{{product.0.image.url}}" alt="Card image cap"></a>
+                        {% endif %}
+                        <div class="card-body">
+                            {% if product.0 %}
+                                <h4 class="card-title">{{product.0.name}}</h4>
+                                <p class="card-text" style="padding-top:5%;"><b>Price:</b> {{product.0.price}} $</p>
+<!--                                <p class="card-text">{{product.description|slice:":50"}}</p>-->
+                            {% else %}
+                                <p>Product has been deleted</p>
+                            {% endif %}
+                            <p class="card-text"><b>Delivery address:</b> {{product.2}}</p>
+                            <p><b>Order date:</b> {{product.1}}</p>
+                    <!--    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>-->
+                        </div>
+                    </div>
+            {% endfor %}
+        </div>
+    </div>
+
+<!--{% if product.0 %}-->
+<!--        <h1>{{product.0.name}}</h1>-->
+<!--        <p>{{product.0.price}}</p>-->
+<!--        <p>{{product.0.producer}}</p>-->
+<!--        <p>{{product.0.producerCountry}}</p>-->
+<!--        <p>{{product.0.description}}</p>-->
+<!--        <img src="{{product.0.image.url}}" />-->
+<!--    {% else %}-->
+<!--        <p>None</p>-->
+<!--    {% endif %}-->
+<!--    <p>{{product.1}}</p>-->
+<!--    <br/><hr><br/>-->
+
+{% else %}
+    <h5 class="text-center" style="margin-top:5%;margin-bottom:35%;">There are no orders yet</h5>
+{% endif %}
+
+{% endblock %}
